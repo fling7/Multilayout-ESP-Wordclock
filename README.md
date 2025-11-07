@@ -5,7 +5,7 @@ English description further below.
 
 ![](pics/wortuhr-webpage.png)
 
-Dies ist ein Projekt für eine mehrsprachige Wortuhr auf Grundlage eines ESP8266-Mikrocontrollers und einer programmierbaren LED-Leiste (WS2812 oder SK6812). Eine Wortuhr ist ein wunderschönes DIY-Projekt für Anfänger, das Technologie und Design kombiniert, um eine funktionale und ästhetisch ansprechende Uhr zu schaffen. 
+Dies ist ein Projekt für eine mehrsprachige Wortuhr auf Grundlage eines ESP32-Mikrocontrollers und einer programmierbaren LED-Leiste (WS2812 oder SK6812). Eine Wortuhr ist ein wunderschönes DIY-Projekt für Anfänger, das Technologie und Design kombiniert, um eine funktionale und ästhetisch ansprechende Uhr zu schaffen.
 Egal, ob Sie ein Anfänger oder ein erfahrener Bastler sind, dieses Projekt ist eine großartige Möglichkeit, Ihre Fähigkeiten unter Beweis zu stellen und etwas wirklich Besonderes zu schaffen.
 Die Software hat viele Funktionen:
 - Mehrsprachig (🇬🇧, 🇩🇪, 🇪🇸, 🇮🇹, 🇳🇱, 🇭🇺, 🇷🇴, 🇨🇭, 🇷🇺, 🇸🇪, 🇫🇷)
@@ -32,7 +32,7 @@ Die Software hat viele Funktionen:
 
 ## Die folgende Hardware/Software wird für dieses Projekt benötigt:
 * Hardware
-    * NodeMCU oder vergleichbares Board mit einem dem ESP8266 oder ESP8285 Chip
+    * ESP32 DevKit oder ein vergleichbares Board auf Basis eines ESP32-Chips
     * WS2812B RGB-LED-Streifen oder SK6812 RGBW-Streifen
     * Stromversorgung 5V 2A
     * Optional: LDR, 10 KOhm-Widerstand
@@ -47,10 +47,11 @@ Die Software hat viele Funktionen:
 
 * Installieren Sie PlatformIO IDE, Node.js und Git manuell über die oben genannten Links.
 * Dadurch wird Visual Studio Code installiert, mit einem PlatformIO-Symbol (Ameisenkopf/Alien) in der Seitenleiste.
-* Gehen Sie zu 'Quick Access / Miscellaneous' und geben Sie den Befehl 'Clone Git Project' ein, und geben Sie 'https://github.com/ESPWortuhr/Wortuhr' als URL ein.
+* Gehen Sie zu 'Quick Access / Miscellaneous' und geben Sie den Befehl 'Clone Git Project' ein, und geben Sie 'https://github.com/ESPWortuhr/Multilayout-ESP-Wordclock.git' als URL ein.
 * Gehen Sie dann zu 'Projekte', fügen Sie das neue Projekt mit 'Vorhandenes hinzufügen' zur Liste hinzu und klicken Sie auf 'Öffnen'.
-* In der PlatformIO-Seitenleiste erscheint nun 'Project Tasks'. Wählen Sie den Befehl 'General / Upload' (dauert ein paar Minuten, die Software wird zuerst erstellt).
-* Schließen Sie den ESP-8266 über USB an. Wenn die Wortuhr-Software erstellt ist, wird sie auf dem ESP installiert.
+* In der PlatformIO-Seitenleiste erscheint nun 'Project Tasks'. Wählen Sie den Befehl 'General / Upload'. Dadurch wird automatisch die Standardumgebung `ESP32` verwendet. Der Build dauert ein paar Minuten.
+* Schließen Sie den ESP32 über USB an. Wenn die Wortuhr-Software erstellt ist, wird sie auf dem ESP installiert.
+* Sollte Ihr ESP32 nicht automatisch erkannt werden, wählen Sie über `Devices` den richtigen seriellen Port aus und klicken erneut auf `Upload`.
 
 ### MacOS
 
@@ -59,20 +60,22 @@ Der einfachste Weg wäre mit [homebrew](https://docs.brew.sh/Installation):
 ```sh
 brew install platformio
 brew install node
-git clone https://github.com/ESPWortuhr/Wortuhr
-cd Wortuhr
+git clone https://github.com/ESPWortuhr/Multilayout-ESP-Wordclock.git
+cd Multilayout-ESP-Wordclock
 pio run -t upload
 ```
+*Der Upload-Befehl verwendet automatisch die Standardumgebung `ESP32`. Falls Sie ein anderes ESP-Modell flashen möchten (z. B. ein ESP32-C3), hängen Sie `-e ESP32C3` an den Befehl an.*
 
 ### Linux
 
 ```sh
 python3 -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/master/scripts/get-platformio.py)"
 sudo apt install npm
-git clone https://github.com/ESPWortuhr/Wortuhr
-cd Wortuhr
+git clone https://github.com/ESPWortuhr/Multilayout-ESP-Wordclock.git
+cd Multilayout-ESP-Wordclock
 pio run -t upload
 ```
+*Auch hier nutzt `pio run -t upload` automatisch die Standardumgebung `ESP32`. Für andere Boards können Sie den Upload mit `-e <ENV_NAME>` gezielt auslösen.*
 
 ## Anschließen des WS2812/ SK6812 LED Streifens
 * RX = DI / Datenbus
@@ -101,7 +104,7 @@ Die einzige Bedingung ist, dass der Copyright-Hinweis des Originalprogramms nich
 
 ![](pics/wortuhr-webpage.png)
 
-This is a project for a multilingual word clock based on an ESP8266 microcontroller and a programmable LED strip (WS2812 or SK6812). A word clock is a beautiful DIY project for beginners that combines technology and design to create a functional and aesthetically pleasing clock. 
+This is a project for a multilingual word clock based on an ESP32 microcontroller and a programmable LED strip (WS2812 or SK6812). A word clock is a beautiful DIY project for beginners that combines technology and design to create a functional and aesthetically pleasing clock.
 Whether you're a beginner or an experienced hobbyist, this project is a great way to show off your skills and create something truly special.
 The software has many features:
 - Multilingual  (🇬🇧, 🇩🇪, 🇪🇸, 🇮🇹, 🇳🇱, 🇭🇺, 🇷🇴, 🇨🇭, 🇷🇺, 🇸🇪, 🇫🇷)
@@ -119,7 +122,7 @@ The software has many features:
 
 ## The following hardware/software are required for this project:
 * Hardware
-    * NodeMCU (tested board Lolin Version3 and Wemos D3 mini) or comparable board with an ESP8266 
+    * ESP32 DevKit (for example the ESP32-DevKitC) or a comparable board built around an ESP32
     * WS2812B, WS2816 RGB LED Stripes or SK6812 RGBW Stribes
     * Power supply 5V 2A
     * Optional: LDR, 10 KOhm resistor
@@ -136,7 +139,7 @@ The software has many features:
 * Go to 'Quick Access / Miscellaneous' and enter the command 'Clone Git Project', and enter 'https://github.com/ESPWortuhr/Wortuhr' as the URL.
 * Then go to 'Projects', add the new project to the list by 'Add Existing' and click on 'Open'.
 * Then in the PlatformIO sidebar 'Project Tasks' appears. Select the command 'General / Upload' (takes a few minutes, the software will be built first).
-* Connect the ESP-8266 via USB. When the word clock software is built, it will be installed on the ESP.
+* Connect the ESP32 via USB. When the word clock software is built, it will be installed on the ESP.
 
 ### MacOS
 

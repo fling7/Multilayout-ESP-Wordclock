@@ -5,6 +5,9 @@
 #include "clockWork.h"
 #include "openwmap.h"
 #include <Arduino.h>
+#if defined(ESP32)
+#include <esp_system.h>
+#endif
 #if AUTOBRIGHT_USE_BH1750
 #include <BH1750.h>
 BH1750 lightMeter(0x23);
