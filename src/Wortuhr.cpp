@@ -93,7 +93,12 @@ uint16_t powerCycleCount = 0; // Variable to store power cycle count
 
 //------------------------------------------------------------------------------
 
+#if defined(ESP32)
+void time_is_set(struct timeval *tv) {
+    (void)tv;
+#else
 void time_is_set() {
+#endif
     time_t utc = time(nullptr);
     if (externalRTC) {
         RTC.adjust(DateTime(utc));
