@@ -4,6 +4,21 @@
 #include <ESP8266WiFi.h>
 #elif defined(ESP32)
 #include <WiFi.h>
+#include <esp_event.h>
+#endif
+
+#if defined(ESP32)
+#if defined(ARDUINO_EVENT_WIFI_STA_GOT_IP)
+#define WORDCLOCK_WIFI_EVENT_GOT_IP ARDUINO_EVENT_WIFI_STA_GOT_IP
+#elif defined(SYSTEM_EVENT_STA_GOT_IP)
+#define WORDCLOCK_WIFI_EVENT_GOT_IP SYSTEM_EVENT_STA_GOT_IP
+#endif
+
+#if defined(ARDUINO_EVENT_WIFI_STA_DISCONNECTED)
+#define WORDCLOCK_WIFI_EVENT_DISCONNECTED ARDUINO_EVENT_WIFI_STA_DISCONNECTED
+#elif defined(SYSTEM_EVENT_STA_DISCONNECTED)
+#define WORDCLOCK_WIFI_EVENT_DISCONNECTED SYSTEM_EVENT_STA_DISCONNECTED
+#endif
 #endif
 
 //---------------------------------------------------------
@@ -78,15 +93,29 @@ void WiFiEvent(WiFiEvent_t event) {
 }
 #elif defined(ESP32)
 void WiFiEvent(WiFiEvent_t event, WiFiEventInfo_t info) {
+    (void)info;
     switch (event) {
-    case SYSTEM_EVENT_STA_GOT_IP:
+#ifdef WORDCLOCK_WIFI_EVENT_GOT_IP
+    case WORDCLOCK_WIFI_EVENT_GOT_IP:
         handleWiFiEvent("GOT_IP", WiFi.localIP());
         break;
-    case SYSTEM_EVENT_STA_DISCONNECTED:
+#endif
+#ifdef WORDCLOCK_WIFI_EVENT_DISCONNECTED
+    case WORDCLOCK_WIFI_EVENT_DISCONNECTED:
         handleWiFiEvent("DISCONNECTED", IPAddress());
         break;
+#endif
     default:
         break;
     }
 }
+#endif
+
+#if defined(ESP32)
+#ifdef WORDCLOCK_WIFI_EVENT_GOT_IP
+#undef WORDCLOCK_WIFI_EVENT_GOT_IP
+#endif
+#ifdef WORDCLOCK_WIFI_EVENT_DISCONNECTED
+#undef WORDCLOCK_WIFI_EVENT_DISCONNECTED
+#endif
 #endif

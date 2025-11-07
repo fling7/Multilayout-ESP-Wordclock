@@ -1,5 +1,11 @@
 #include "network.h"
 
+#ifdef ESP8266
+#include <ESP8266WiFi.h>
+#elif defined(ESP32)
+#include <WiFi.h>
+#endif
+
 #include <WiFiManager.h>
 
 WiFiManager wifiManager(Serial);
@@ -29,6 +35,9 @@ void Network::resetSettings() {
 String Network::getSSID() { return wifiManager.getWiFiSSID(); }
 
 void Network::setup(const char *hostname) {
+#if defined(ESP8266) || defined(ESP32)
+    WiFi.mode(WIFI_STA);
+#endif
     wifiManager.setHostname(hostname);
 #if MANUAL_WIFI_SETTINGS
     wifiManager.preloadWiFi(WIFI_SSID, WIFI_PASSWORD);
@@ -40,7 +49,11 @@ void Network::setup(const char *hostname) {
     wifiManager.autoConnect(CP_SSID);
 #endif
     // explicitly disable AP, esp defaults to STA+AP
+#if defined(ESP8266)
     WiFi.enableAP(false);
+#elif defined(ESP32)
+    WiFi.softAPdisconnect(true);
+#endif
     Network::info();
 }
 

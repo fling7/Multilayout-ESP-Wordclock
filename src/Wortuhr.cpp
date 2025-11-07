@@ -349,6 +349,8 @@ void setup() {
     }
 #ifdef ESP8266
     settimeofday_cb(time_is_set);
+#elif defined(ESP32)
+    sntp_set_time_sync_notification_cb(time_is_set);
 #endif
 
     //-------------------------------------
