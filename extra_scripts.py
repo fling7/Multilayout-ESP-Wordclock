@@ -54,10 +54,27 @@ npm_ci = env.Command(
     action="npm ci --silent"
 )
 
+def run_grunt_build(target, source, env):
+    import os
+    import subprocess
+
+    env_vars = os.environ.copy()
+    env_vars["PIO_ENV_NAME"] = env["PIOENV"]
+
+    result = subprocess.run(
+        ["npx", "--no-install", "grunt", "build"],
+        cwd=env.subst("$PROJECT_DIR"),
+        env=env_vars,
+        check=False,
+    )
+
+    return result.returncode
+
+
 grunt_build = env.Command(
     target="include/WebPageContent.gen.inc",
     source="Gruntfile.js",
-    action="PIO_ENV_NAME=$PIOENV npx --no-install grunt build"
+    action=run_grunt_build,
 )
 env.Depends(grunt_build, npm_ci)
 env.Depends(grunt_build, package_json)
