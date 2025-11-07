@@ -56,13 +56,28 @@ npm_ci = env.Command(
 
 def run_grunt_build(target, source, env):
     import os
+    import shutil
     import subprocess
 
     env_vars = os.environ.copy()
     env_vars["PIO_ENV_NAME"] = env["PIOENV"]
 
+    npx_binary = shutil.which("npx", path=env_vars.get("PATH"))
+
+    if os.name == "nt" and npx_binary is None:
+        # When PlatformIO is executed from the VS Code extension on
+        # Windows, the PATH that is propagated to this helper script may
+        # not contain the default npm installation directory.  `npx.cmd`
+        # is the actual executable that needs to be invoked on Windows,
+        # therefore we try to resolve it explicitly.
+        npx_binary = shutil.which("npx.cmd", path=env_vars.get("PATH"))
+
+    if npx_binary is None:
+        print("Error: unable to locate 'npx'. Please ensure that Node.js is installed and available in PATH.")
+        return 1
+
     result = subprocess.run(
-        ["npx", "--no-install", "grunt", "build"],
+        [npx_binary, "--no-install", "grunt", "build"],
         cwd=env.subst("$PROJECT_DIR"),
         env=env_vars,
         check=False,
